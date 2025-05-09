@@ -1,2 +1,4 @@
-# retry
-This is an example implementation of a workflow retry methodology
+# Overview
+While it has been possible to automatically retry workflows/jobs/steps in other CI frameworks for years (I have clear memories of doing this in GitLab in 2016), it is still not so easy in GitHub. While there are a number of potential approach to this (see [my notes](https://github.com/DAKLabb/gh-actions?tab=readme-ov-file#retrying-on-failure) on gh-actions), this repo is focused on a methodology for re-running failed workflows.
+
+Note: This work is based on [a comment](https://github.com/orgs/community/discussions/67654#discussioncomment-8038649) from @nkraetzschmar in the GH community.

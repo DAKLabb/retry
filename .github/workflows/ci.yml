@@ -1,0 +1,23 @@
+name: Workflow to Rerun
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  job-to-rerun:
+    name: Job to return
+    runs-on: ubuntu-latest
+    steps:
+      - name: failing step
+        id: failure
+        run: exit 1
+      - name: retry-on-failure
+        if: failure() && steps.failure.outcome == 'failure' && fromJSON(github.run_attempt) < 3
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+          GH_DEBUG: api
+        run: gh workflow run rerun.yml -F run_id=${{ github.run_id }}
