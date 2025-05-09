@@ -19,7 +19,7 @@ I added a new step (shown below) that would trigger a re-run of the workflow if 
          run: gh workflow run rerun.yml -F run_id=${{ github.run_id }}
 ```
 
-This step will only run if we are in a failure state, the prior job (`id`: `check`) failed, and we haven't re-run more than 2 tiems.
+This step will only run if we are in a failure state, the prior job (`id`: `check`) failed, and we haven't re-run more than 2 times.
 
 If the condition above is satisfied, this step will use the GH CLI to call the "Rerun Workflow" (shown below) to trigger the job. A sepearete workflow is used for this b/c a workflow cannot be rerun from itself (as discussed [here](https://github.com/orgs/community/discussions/67654#discussioncomment-7052837))
 
