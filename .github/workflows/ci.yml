@@ -1,14 +1,13 @@
 name: Workflow to Rerun
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
 
 jobs:
-  job-to-rerun:
-    name: Job to return
+  some-job:
+    name: Some flaky job
     runs-on: ubuntu-latest
     steps:
       - name: failing step
