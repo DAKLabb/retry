@@ -1,12 +1,12 @@
 # Overview
-While it has been possible to automatically retry workflows/jobs/steps in other CI frameworks for years (I have clear memories of doing this in GitLab in 2016), it is still not so easy in GitHub. While there are a number of potential approachs to this (see [my notes](https://github.com/DAKLabb/gh-actions?tab=readme-ov-file#retrying-on-failure) on gh-actions), this repo is focused on a methodology for rerunning failed workflows.
+While it has been possible to automatically retry workflows/jobs/steps in other CI frameworks for years (I have clear memories of doing this in GitLab in 2016), it is still not so easy in GitHub. While there are a number of potential approaches to this (see [my notes](https://github.com/DAKLabb/gh-actions?tab=readme-ov-file#retrying-on-failure) on gh-actions), this repo is focused on a methodology for rerunning failed workflows.
 
-Note: This work is based on [a comment](https://github.com/orgs/community/discussions/67654#discussioncomment-8038649) from [nkraetzschmar](https://github.com/nkraetzschmar) in the GH community.
+Note: This work is based on [a comment](https://github.com/orgs/community/discussions/67654#discussioncomment-8038649) from [nkraetzschmar](https://github.com/nkraetzschmar) in the GitHub community.
 
 ## Rerunning a workflow on failure
-Generally speaking, if a workflow is failing intermittently, it is best to try to fix the source of the failure. That said, if your action is consuming external services that may experience availability issues, you may not have that option. In this case, you can have a workflow step that exectutes conditionally to rerun the workflow.
+Generally speaking, if a workflow is failing intermittently, it is best to try to fix the source of the failure. That said, if your action is consuming external services that may experience availability issues, you may not have that option. In this case, you can have a workflow step that executes conditionally to rerun the workflow.
 
-My particular usecase for retying was due to flake from the GH API. I had a step, `check`, that would use the GH CLI to get information about a PR which sometimes failed (especially on larger PRs). If this step failed, the job would fail, and all subsequent jobs would be skipped as this information was needed as an input to them.
+My particular use case for retying was due to flake from the GitHub API. I had a step, `check`, that would use the GitHub CLI to get information about a PR which sometimes failed (especially on larger PRs). If this step failed, the job would fail, and all subsequent jobs would be skipped as this information was needed as an input to them.
 
 I added a new step (shown below) that would trigger a rerun of the workflow if this step failed.
 ```yaml
@@ -21,7 +21,7 @@ I added a new step (shown below) that would trigger a rerun of the workflow if t
 
 This step will only run if we are in a failure state, the prior job (`id`: `check`) failed, and we haven't rerun more than 2 times.
 
-If the conditions above are satisfied, this step will use the GH CLI to call the "Rerun Workflow" (shown below) to trigger the job. A separate workflow is used for this because a workflow cannot be rerun from itself (as discussed [here](https://github.com/orgs/community/discussions/67654#discussioncomment-7052837)).
+If the conditions above are satisfied, this step will use the GitHub CLI to call the "Rerun Workflow" (shown below) to trigger the job. A separate workflow is used for this because a workflow cannot be rerun from itself (as discussed [here](https://github.com/orgs/community/discussions/67654#discussioncomment-7052837)).
 
 ```yaml
 name: Rerun Workflow
